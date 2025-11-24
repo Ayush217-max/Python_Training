@@ -72,3 +72,25 @@ marks = [98,97,92,93]
 print(fruits[0])
 print(marks[-1])
 print(vegetables[2])
+
+fruits.append("kiwi")
+print(fruits)
+
+fruits.insert(1,"orange")
+print(fruits)
+
+fruits.pop()
+print(fruits)
+
+fruits.pop(2)
+print(fruits)
+
+fruits.remove("apple")
+print(fruits)
+
+del fruits[1]
+print(fruits)
+
+
+
+
