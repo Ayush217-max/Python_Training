@@ -1,0 +1,38 @@
+a={1,2,3}
+b={3,4,5}
+print((a | b)-(a&b))
+
+items = [1, 2, 2, 3, 4, 4, 5]
+unique_list = list(dict.fromkeys(items)) 
+print(unique_list)
+
+
+nums = {2, 4, 6, 8, 10}
+target = 12
+pairs = set()
+
+for num in nums:
+    complement = target - num
+    if complement in nums and (complement, num) not in pairs and (num, complement) not in pairs:
+        pairs.add((num, complement))
+
+print(pairs)
+
+
+
+set1 = {1, 2, 3}
+set2 = {4, 5}
+disjoint = True
+for item in set1:
+    if item in set2:
+        disjoint = False
+        break
+print("Disjoint:", disjoint)
+
+
+
+words = ["apple", "banana", "grape"]
+unique_chars = set("".join(words))
+print(unique_chars)
+
+
