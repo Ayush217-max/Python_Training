@@ -1,0 +1,42 @@
+
+marks = {"A": 85, "B": 92, "C": 78, "D": 92}
+max_val = sorted(marks.values())[-1]
+keys = [k for k, v in marks.items() if v == max_val]
+print(keys)
+
+
+d = {"a": 1, "b": 2, "c": 1}
+inverted = {}
+for k, v in d.items():
+    inverted.setdefault(v, []).append(k)
+print(inverted)
+
+
+d1 = {"a": 1, "b": 2}
+d2 = {"b": 3, "c": 4}
+merged = {}
+for k in set(d1) | set(d2):
+    if k in d1 and k in d2:
+        merged[k] = [d1[k], d2[k]]
+    else:
+        merged[k] = d1.get(k, d2.get(k))
+print(merged)
+
+
+
+prices = {"item1": 50, "item2": 150, "item3": 200}
+filtered = {k: v for k, v in prices.items() if v >= 100}
+print(filtered)
+
+employees = {
+    "e1": {"dept": "IT"},
+    "e2": {"dept": "HR"},
+    "e3": {"dept": "IT"}
+}
+dept_count = {}
+for emp in employees.values():
+    dept = emp["dept"]
+    dept_count[dept] = dept_count.get(dept, 0) + 1
+print(dept_count)
+
+
