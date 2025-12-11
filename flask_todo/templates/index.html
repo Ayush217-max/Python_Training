@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white"><strong>Add a New Task</strong></div>
+      <div class="card-body">
+        <!-- Proper form opening -->
+        <form action="{{ url_for('add_task') }}" method="post" class="needs-validation" novalidate>
+          <div class="mb-3">
+            <label for="title" class="form-label">Task title <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="e.g., Buy groceries" required>
+            <div class="invalid-feedback">Please provide a title.</div>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Optional details..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-plus me-1"></i>Add Task
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tasks list/table -->
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white d-flex align-items-center justify-content-between">
+        <strong>All Tasks{% if status_filter %} — {{ status_filter }}{% endif %}</strong>
+        <span class="text-muted small">{{ tasks|length }} shown</span>
+      </div>
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th style="width:36px;"></th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in tasks %}
+            <tr class="{% if task.status=='Completed' %}table-success{% endif %}">
+              <td>
+                {% if task.status != 'Completed' %}
+                <form action="{{ url_for('complete_task', task_id=task.id) }}" method="post" style="display:inline;">
+                  <button type="submit" class="btn btn-sm btn-outline-success" title="Mark as completed">
+                    <i class="fa-solid fa-check"></i>
+                  </button>
+                </form>
+                {% else %}
+                  <i class="fa-solid fa-circle-check text-success" title="Completed"></i>
+                {% endif %}
+              </td>
+              <td class="fw-medium">{{ task.title }}</td>
+              <td class="text-muted">{{ task.description or '-' }}</td>
+              <td>
+                <span class="badge rounded-pill {% if task.status=='Completed' %}text-bg-success{% else %}text-bg-secondary{% endif %}">{{ task.status }}</span>
+              </td>
+              <td><span class="small text-muted">{{ task.created_at.strftime('%Y-%m-%d %H:%M') }}</span></td>
+              <td class="text-end">
+                <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn btn-sm btn-outline-secondary">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post" style="display:inline;">
+                  <button type="submit" class="btn btn-sm btn-outline-danger">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="6" class="text-center text-muted py-4">No tasks yet. Add your first task!</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Client-side form validation -->
+<script>
+(() => {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+{% endblock %}
